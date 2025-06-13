@@ -73,3 +73,16 @@ def recommend_opportunities(df):
     if df[df['Category'] == 'Groceries']['Amount'].mean() > 1000:
         recs.append("Look for monthly grocery deals or local markets.")
     return recs
+# ...existing code...
+
+def update_transaction(entry_id, data):
+    conn = sqlite3.connect(DB_FILE)
+    c = conn.cursor()
+    c.execute('''
+        UPDATE transactions
+        SET Date = ?, Category = ?, Amount = ?, Type = ?, Description = ?
+        WHERE id = ?
+    ''', (data['Date'], data['Category'], data['Amount'], data['Type'], data['Description'], entry_id))
+    conn.commit()
+    conn.close()
+# ...existing code...
