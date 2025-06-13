@@ -8,7 +8,7 @@ from utils import (
     load_data,
     # If you have these in utils, otherwise remove:
     # preprocess_data, forecast_expense, goal_progress, recommend_opportunities
-    forecast_expense, goal_progress, recommend_opportunities
+    forecast_expense, goal_progress, recommend_opportunities, update_transaction
 )
 
 # Initialize the database
