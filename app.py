@@ -21,7 +21,7 @@ st.title("💸 Personal Finance Dashboard")
 df = load_data()
 
 # Sidebar
-menu = st.sidebar.radio("Navigate", ["Dashboard", "Add Entry", "Forecast", "Goals", "Suggestions"])
+menu = st.sidebar.radio("Navigate", ["Dashboard", "Add Entry", "Forecast", "Goals", "Suggestions", "Edit Entry"])
 # ...existing code...
 
 # Add this after the sidebar and before the Dashboard section
