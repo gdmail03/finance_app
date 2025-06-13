@@ -72,6 +72,8 @@ def recommend_opportunities(df):
         recs.append("Consider switching to a cheaper mobile plan.")
     if df[df['Category'] == 'Groceries']['Amount'].mean() > 1000:
         recs.append("Look for monthly grocery deals or local markets.")
+    if df[df['Category'] == 'Travel']['Amount'].mean() > 1000:
+        recs.append("Try to look for cheaper travel plans")
     return recs
 # ...existing code...
 
