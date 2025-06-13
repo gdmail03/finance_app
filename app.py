@@ -22,7 +22,17 @@ df = load_data()
 
 # Sidebar
 menu = st.sidebar.radio("Navigate", ["Dashboard", "Add Entry", "Forecast", "Goals", "Suggestions"])
+# ...existing code...
 
+# Add this after the sidebar and before the Dashboard section
+if st.sidebar.checkbox("Show All Entries"):
+    st.subheader("📋 All Entries")
+    if df.empty:
+        st.info("No entries found.")
+    else:
+        st.dataframe(df[['id', 'Date', 'Category', 'Amount', 'Type', 'Description']].sort_values(by='Date', ascending=False))
+
+# ...existing code...
 # Dashboard
 if menu == "Dashboard":
     st.header("📊 Expense Overview")
@@ -95,3 +105,42 @@ elif menu == "Suggestions":
             st.info(r)
     else:
         st.success("No suggestions – your spending is optimized!")
+# ...existing code...
+
+menu = st.sidebar.radio("Navigate", ["Dashboard", "Add Entry", "Edit Entry", "Forecast", "Goals", "Suggestions"])
+
+# ...existing code...
+
+# Edit Entry
+elif menu == "Edit Entry":
+    st.header("✏️ Edit Existing Entry")
+    if df.empty:
+        st.info("No entries to edit.")
+    else:
+        entry = st.selectbox(
+            "Select entry to edit",
+            df.apply(lambda row: f"{row['id']} | {row['Date'].strftime('%Y-%m-%d')} | {row['Category']} | {row['Amount']} | {row['Type']}", axis=1)
+        )
+        entry_id = int(entry.split('|')[0].strip())
+        row = df[df['id'] == entry_id].iloc[0]
+
+        with st.form("edit_form"):
+            date = st.date_input("Date", row['Date'])
+            category = st.text_input("Category", row['Category'])
+            amount = st.number_input("Amount", min_value=0.0, value=float(row['Amount']))
+            type_ = st.selectbox("Type", ["Expense", "Income"], index=0 if row['Type'] == "Expense" else 1)
+            desc = st.text_input("Description", row['Description'])
+            submitted = st.form_submit_button("Update")
+            if submitted:
+                new_data = {
+                    "Date": pd.to_datetime(str(date)).strftime("%Y-%m-%d"),
+                    "Category": category,
+                    "Amount": float(amount),
+                    "Type": type_,
+                    "Description": desc
+                }
+                from utils import update_transaction
+                update_transaction(entry_id, new_data)
+                st.success("Entry updated successfully!")
+                df = load_data()
+# ...existing code...
