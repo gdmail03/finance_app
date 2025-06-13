@@ -105,11 +105,6 @@ elif menu == "Suggestions":
             st.info(r)
     else:
         st.success("No suggestions – your spending is optimized!")
-# ...existing code...
-
-menu = st.sidebar.radio("Navigate", ["Dashboard", "Add Entry", "Edit Entry", "Forecast", "Goals", "Suggestions"])
-
-# ...existing code...
 
 # Edit Entry
 elif menu == "Edit Entry":
